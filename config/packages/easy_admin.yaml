@@ -1,0 +1,22 @@
+easy_admin:
+    site_name: 'MDFe - Labone Produtos para Hoteis e Moteis'
+    user:
+        # this method/property must return the string representation of the user
+        # (Symfony will look for getFullName(), isFullName(), ..., and 'fullName' property)
+        name_property_path: 'username'
+
+        # this method/property must return the absolute URL of the user avatar image
+        # (Symfony will look for getGravatar(), isGravatar(), ..., and 'gravatar' property)
+        avatar_property_path: 'gravatar'
+
+    entities:
+#        # List the entity class name you want to manage
+#        - App\Entity\Product
+#        - App\Entity\Category
+        User:
+            class: App\Entity\User
+            form:
+                fields:
+                    - username
+                    - { property: 'plainPassword', type: 'password' }
+                    - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER' } } }
