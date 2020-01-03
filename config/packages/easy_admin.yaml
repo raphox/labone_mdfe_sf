@@ -1,5 +1,19 @@
 easy_admin:
     site_name: 'MDFe - Labone Produtos para Hoteis e Moteis'
+
+    design:
+        menu:
+            -
+                label: 'UF'
+                children:
+                    - { entity: 'Country', label: 'Países' }
+                    - { entity: 'State', label: 'Estados' }
+                    - { entity: 'City', label: 'Cidades' }
+            -
+                label: 'Sistema'
+                children:
+                    - { entity: 'User', label: 'Usuários' }
+
     user:
         # this method/property must return the string representation of the user
         # (Symfony will look for getFullName(), isFullName(), ..., and 'fullName' property)
@@ -13,6 +27,12 @@ easy_admin:
 #        # List the entity class name you want to manage
 #        - App\Entity\Product
 #        - App\Entity\Category
+        Country:
+            class: App\Entity\Country
+        State:
+            class: App\Entity\State
+        City:
+            class: App\Entity\City
         User:
             class: App\Entity\User
             form:
