@@ -4,6 +4,10 @@ easy_admin:
     design:
         menu:
             -
+                label: 'MDF-e'
+                children:
+                    - { entity: 'MdfeIde', label: 'Itens' }
+            -
                 label: 'UF'
                 children:
                     - { entity: 'Country', label: 'Países' }
@@ -24,9 +28,44 @@ easy_admin:
         avatar_property_path: 'gravatar'
 
     entities:
-#        # List the entity class name you want to manage
-#        - App\Entity\Product
-#        - App\Entity\Category
+        MdfeIde:
+            class: App\Entity\MdfeIde
+            form:
+                fields:
+                    - { type: 'tab' , label: 'Dados' }
+                    - { property: 'cUF', label: 'Identificação da UF' }
+                    # - { property: 'tpAmb' }
+                    - { property: 'tpEmit', label: 'Tipo do Emitente' }
+                    - { property: 'tpTransp', label: 'Tipo do Transportador' }
+                    - { property: 'mod', label: 'Modelo do Manifesto Eletrônico', help: 'Utilizar o código 58 para identificação do MDF-e' }
+                    - { property: 'serie', label: 'Série do Manifesto', help: 'Informar a série do documento fiscal (informar zero se inexistente). Série na faixa [920-969]: Reservada para emissão por contribuinte pessoa física com inscrição estadual.' }
+                    - { property: 'nMDF', label: 'Número do Manifesto' }
+                    - { property: 'cMDF', label: 'Código numérico que compõe a Chave de Acesso' }
+                    - { property: 'cDV', label: 'Digito verificador da chave de acesso do Manifesto' }
+                    - { property: 'modal', label: 'Modalidade de transporte' }
+                    - { property: 'dhEmi', label: 'Data e hora de emissão do Manifesto' }
+                    - { property: 'tpEmis', label: 'Forma de emissão do Manifesto (Normal ou Contingência)' }
+                    - { property: 'procEmi', label: 'Identificação do processo de emissão do Manifesto' }
+                    # - { property: 'verProc', label: '' }
+                    - { property: 'UFIni', label: 'Sigla da UF do Carregamento' }
+                    - { property: 'UFFim', label: 'Sigla da UF do Descarregamento' }
+                    - { property: 'dhIniViagem', label: 'Data e hora previstos de inicio da viagem' }
+                    - { property: 'indCanalVerde', label: 'Indicador de participação do Canal Verde' }
+                    -
+                        {
+                            property: 'indCarregaPosterior',
+                            label: 'Indicador de MDF-e com inclusão da carga posterior',
+                            help: 'Indicador de MDF-e com inclusão da carga posterior<br/> a emissão por evento de inclusão de DF-e'
+                        }
+                    - { property: 'loadingCities', label: 'Municipios Carregamento', type: 'easyadmin_autocomplete' }
+                    - { property: 'unloadingCities', label: 'Municipios Descarregamento', type: 'easyadmin_autocomplete' }
+
+                    - { type: 'tab' , label: 'Rodoviário' }
+                    - { type: 'tab' , label: 'Informações dos Documentos' }
+                    - { type: 'tab' , label: 'Informações Seguradora' }
+                    - { type: 'tab' , label: 'Informações Adicionais' }
+
+
         Country:
             class: App\Entity\Country
         State:
