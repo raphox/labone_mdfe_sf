@@ -9,13 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class City
 {
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\State", inversedBy="cities")
-     * @ORM\JoinColumn(name="uf", referencedColumnName="id")
-     */
-    private $state;
-
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -75,18 +68,6 @@ class City
     public function setIbge(?int $ibge): self
     {
         $this->ibge = $ibge;
-
-        return $this;
-    }
-
-    public function getState(): ?State
-    {
-        return $this->state;
-    }
-
-    public function setState(?State $state): self
-    {
-        $this->state = $state;
 
         return $this;
     }

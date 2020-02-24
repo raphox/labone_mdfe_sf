@@ -24,6 +24,13 @@ class MdfeIde
      */
     private $unloadingCities;
 
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\State", cascade={"all"})
+     * @ORM\JoinTable(name="mdfe_ide_routing_city")
+     */
+    private $routingStates;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -136,10 +143,16 @@ class MdfeIde
      */
     protected $updatedAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Company", inversedBy="mdfeIdes")
+     */
+    private $company;
+
     public function __construct()
     {
         $this->loadingCities = new ArrayCollection();
         $this->unloadingCities = new ArrayCollection();
+        $this->routingStates = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -462,6 +475,44 @@ class MdfeIde
         if ($this->unloadingCities->contains($unloadingCity)) {
             $this->unloadingCities->removeElement($unloadingCity);
             $unloadingCity->removeMdfe($this);
+        }
+
+        return $this;
+    }
+
+    public function getCompany(): ?Company
+    {
+        return $this->company;
+    }
+
+    public function setCompany(?Company $company): self
+    {
+        $this->company = $company;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|State[]
+     */
+    public function getRoutingStates(): Collection
+    {
+        return $this->routingStates;
+    }
+
+    public function addRoutingState(State $routingState): self
+    {
+        if (!$this->routingStates->contains($routingState)) {
+            $this->routingStates[] = $routingState;
+        }
+
+        return $this;
+    }
+
+    public function removeRoutingState(State $routingState): self
+    {
+        if ($this->routingStates->contains($routingState)) {
+            $this->routingStates->removeElement($routingState);
         }
 
         return $this;

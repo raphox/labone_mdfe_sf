@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\StateRepository")
+ * @ORM\Table(indexes={@ORM\Index(columns={"uf"})})
  */
 class State
 {
@@ -40,6 +41,12 @@ class State
      * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $ddd;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Country", inversedBy="states")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $country;
 
     public function getId(): ?int
     {
@@ -104,5 +111,22 @@ class State
         $this->ddd = $ddd;
 
         return $this;
+    }
+
+    public function getCountry(): ?Country
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?Country $country): self
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 }

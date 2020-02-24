@@ -7,6 +7,7 @@ easy_admin:
                 label: 'MDF-e'
                 children:
                     - { entity: 'MdfeIde', label: 'Itens' }
+                    - { entity: 'Company', label: 'Empresas' }
             -
                 label: 'UF'
                 children:
@@ -33,22 +34,117 @@ easy_admin:
             form:
                 fields:
                     - { type: 'tab' , label: 'Dados' }
-                    - { property: 'cUF', label: 'Identificação da UF' }
-                    # - { property: 'tpAmb' }
-                    - { property: 'tpEmit', label: 'Tipo do Emitente' }
-                    - { property: 'tpTransp', label: 'Tipo do Transportador' }
+                    -
+                        {
+                            property: 'company',
+                            label: 'Emitente',
+                            type: "entity",
+                            type_options: {
+                                class: App\Entity\Company,
+                                choice_label: 'xNome',
+                            }
+                        }
+                    -
+                        {
+                            property: 'cUF',
+                            label: 'Identificação da UF',
+                            help: 'Código da UF do emitente do Documento Fiscal. Utilizar a Tabela do IBGE de código de unidades da federação.',
+                            type: "entity",
+                            type_options: {
+                                class: App\Entity\State,
+                                choice_label: 'uf',
+                                choice_value: 'ibge'
+                            }
+                        }
+                    -
+                        {
+                            property: 'tpEmit',
+                            label: 'Tipo do Emitente',
+                            help: 'Deve ser preenchido com 2 para emitentes de NF-e e pelas transportadoras quando estiverem fazendo transporte de carga própria. Deve ser preenchido com 3 para transportador de carga que emitirá à posteriori CT-e Globalizado relacionando as NF-e.',
+                            type: "choice",
+                            type_options:
+                                {
+                                    choices:
+                                        {
+                                            "Prestador de serviço de transporte": "1",
+                                            "Transportador de Carga Própria": "2",
+                                            "Prestador de serviço de transporte que emitirá CT-e Globalizado": "3",
+                                        }
+                                }
+                        }
+                    -
+                        {
+                            property: 'tpTransp',
+                            label: 'Tipo do Transportador',
+                            type: "choice",
+                            type_options:
+                                {
+                                    choices:
+                                        {
+                                            "ETC": "ETC",
+                                            "TAC": "TAC",
+                                            "CTC": "CTC"
+                                        }
+                                }
+                        }
                     - { property: 'mod', label: 'Modelo do Manifesto Eletrônico', help: 'Utilizar o código 58 para identificação do MDF-e' }
                     - { property: 'serie', label: 'Série do Manifesto', help: 'Informar a série do documento fiscal (informar zero se inexistente). Série na faixa [920-969]: Reservada para emissão por contribuinte pessoa física com inscrição estadual.' }
-                    - { property: 'nMDF', label: 'Número do Manifesto' }
+                    - { property: 'nMDF', label: 'Número do Manifesto', help: 'Código aleatório gerado pelo emitente, com o objetivo de evitar acessos indevidos ao documento.' }
                     - { property: 'cMDF', label: 'Código numérico que compõe a Chave de Acesso' }
-                    - { property: 'cDV', label: 'Digito verificador da chave de acesso do Manifesto' }
-                    - { property: 'modal', label: 'Modalidade de transporte' }
+                    - { property: 'cDV', label: 'Digito verificador da chave de acesso do Manifesto', help: 'Código aleatório gerado pelo emitente, com o objetivo de evitar acessos indevidos ao documento.' }
+                    -
+                        {
+                            property: "modal",
+                            label: "Modalidade de transporte",
+                            type: "choice",
+                            type_options:
+                                {
+                                    choices:
+                                        {
+                                            "Rodoviário": "1",
+                                            "Aéreo": "2",
+                                            "Aquaviário": "3",
+                                            "Ferroviário": "4"
+                                        }
+                                }
+                        }
                     - { property: 'dhEmi', label: 'Data e hora de emissão do Manifesto' }
-                    - { property: 'tpEmis', label: 'Forma de emissão do Manifesto (Normal ou Contingência)' }
-                    - { property: 'procEmi', label: 'Identificação do processo de emissão do Manifesto' }
-                    # - { property: 'verProc', label: '' }
-                    - { property: 'UFIni', label: 'Sigla da UF do Carregamento' }
-                    - { property: 'UFFim', label: 'Sigla da UF do Descarregamento' }
+                    -
+                        {
+                            property: 'tpEmis',
+                            label: 'Forma de emissão do Manifesto (Normal ou Contingência)',
+                            type: "choice",
+                            type_options:
+                                {
+                                    choices:
+                                        {
+                                            "Normal": "1",
+                                            "Contingência": "2"
+                                        }
+                                }
+                        }
+                    -
+                        {
+                            property: 'UFIni',
+                            label: 'Sigla da UF do Carregamento',
+                            type: "entity",
+                            type_options: {
+                                class: App\Entity\State,
+                                choice_label: 'uf',
+                                choice_value: 'uf'
+                            }
+                        }
+                    -
+                        {
+                            property: 'UFFim',
+                            label: 'Sigla da UF do Descarregamento',
+                            type: "entity",
+                            type_options: {
+                                class: App\Entity\State,
+                                choice_label: 'uf',
+                                choice_value: 'uf'
+                            }
+                        }
                     - { property: 'dhIniViagem', label: 'Data e hora previstos de inicio da viagem' }
                     - { property: 'indCanalVerde', label: 'Indicador de participação do Canal Verde' }
                     -
@@ -59,19 +155,74 @@ easy_admin:
                         }
                     - { property: 'loadingCities', label: 'Municipios Carregamento', type: 'easyadmin_autocomplete' }
                     - { property: 'unloadingCities', label: 'Municipios Descarregamento', type: 'easyadmin_autocomplete' }
+                    - { property: 'routingStates', label: 'Percurso', type: 'entity', type_options: { multiple: true, expanded: true } }
 
                     - { type: 'tab' , label: 'Rodoviário' }
                     - { type: 'tab' , label: 'Informações dos Documentos' }
                     - { type: 'tab' , label: 'Informações Seguradora' }
                     - { type: 'tab' , label: 'Informações Adicionais' }
+                    # - { property: 'tpAmb' }
+                    # - { property: 'procEmi', label: 'Identificação do processo de emissão do Manifesto' }
+                    # - { property: 'verProc', label: 'Informar a versão do aplicativo emissor de MDF-e.' }
 
-
+        Company:
+            class: App\Entity\Company
+            form:
+                fields:
+                    - { property: 'cnpj', label: 'CNPJ' }
+                    - { property: 'ie', label: 'Insc. Estadual' }
+                    - { property: 'xNome', label: 'Razão Social' }
+                    - { property: 'xFant', label: 'Nome Fantasia' }
+                    - { property: 'xLgr', label: 'Logradouro' }
+                    - { property: 'nro', label: 'Número' }
+                    - { property: 'xBairro', label: 'Bairro' }
+                    - { property: 'cMun', label: 'Cidade' }
+                    - { property: 'cep', label: 'CEP' }
+                    - { property: 'uf', label: 'UF' }
+                    - { property: 'fone', label: 'Telefone' }
+                    - { property: 'email', label: 'E-mail' }
         Country:
             class: App\Entity\Country
+            form:
+                fields:
+                    - { property: 'name', label: 'Nome' }
+                    - { property: 'name_pt', label: 'Nome PT' }
+                    - { property: 'acronym', label: 'Acrônimo' }
+                    - { property: 'bacen', label: 'BACEN' }
+                    - { property: 'states', label: 'Estados' }
         State:
             class: App\Entity\State
+            form:
+                fields:
+                    - { property: 'name', label: 'Nome' }
+                    - { property: 'uf', label: 'UF' }
+                    -
+                        {
+                            property: 'country',
+                            label: 'País',
+                            type: "entity",
+                            type_options: {
+                                class: App\Entity\Country,
+                                choice_label: 'name'
+                            }
+                        }
+                    - { property: 'ibge', label: 'IBGE' }
+                    - { property: 'ddd', label: 'DDD' }
         City:
             class: App\Entity\City
+            form:
+                fields:
+                    - { property: 'name', label: 'Nome' }
+                    -
+                        {
+                            property: 'uf',
+                            label: 'Estado',
+                            type: "choice",
+                            type_options: {
+                                choices: { 'AC': 'AC', 'AL': 'AL', 'AM': 'AM', 'AP': 'AP', 'BA': 'BA', 'CE': 'CE', 'DF': 'DF', 'ES': 'ES', 'GO': 'GO', 'MA': 'MA', 'MG': 'MG', 'MS': 'MS', 'MT': 'MT', 'PA': 'PA', 'PB': 'PB', 'PE': 'PE', 'PI': 'PI', 'PR': 'PR', 'RJ': 'RJ', 'RN': 'RN', 'RO': 'RO', 'RR': 'RR', 'RS': 'RS', 'SC': 'SC', 'SE': 'SE', 'SP': 'SP', 'TO': 'TO', 'EX': 'EX' }
+                            }
+                        }
+                    - { property: 'ibge', label: 'IBGE' }
         User:
             class: App\Entity\User
             form:
