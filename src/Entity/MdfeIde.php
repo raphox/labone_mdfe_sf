@@ -148,11 +148,28 @@ class MdfeIde
      */
     private $company;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $rntrc;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MdfeIdeInfCiot", mappedBy="mdfe")
+     */
+    private $mdfeIdeInfCiots;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MdfeIdeDisp", mappedBy="mdfe")
+     */
+    private $mdfeIdeDisps;
+
     public function __construct()
     {
         $this->loadingCities = new ArrayCollection();
         $this->unloadingCities = new ArrayCollection();
         $this->routingStates = new ArrayCollection();
+        $this->mdfeIdeInfCiots = new ArrayCollection();
+        $this->mdfeIdeDisps = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -513,6 +530,80 @@ class MdfeIde
     {
         if ($this->routingStates->contains($routingState)) {
             $this->routingStates->removeElement($routingState);
+        }
+
+        return $this;
+    }
+
+    public function getRntrc(): ?string
+    {
+        return $this->rntrc;
+    }
+
+    public function setRntrc(?string $rntrc): self
+    {
+        $this->rntrc = $rntrc;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MdfeIdeInfCiot[]
+     */
+    public function getMdfeIdeInfCiots(): Collection
+    {
+        return $this->mdfeIdeInfCiots;
+    }
+
+    public function addMdfeIdeInfCiot(MdfeIdeInfCiot $mdfeIdeInfCiot): self
+    {
+        if (!$this->mdfeIdeInfCiots->contains($mdfeIdeInfCiot)) {
+            $this->mdfeIdeInfCiots[] = $mdfeIdeInfCiot;
+            $mdfeIdeInfCiot->setMdfe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMdfeIdeInfCiot(MdfeIdeInfCiot $mdfeIdeInfCiot): self
+    {
+        if ($this->mdfeIdeInfCiots->contains($mdfeIdeInfCiot)) {
+            $this->mdfeIdeInfCiots->removeElement($mdfeIdeInfCiot);
+            // set the owning side to null (unless already changed)
+            if ($mdfeIdeInfCiot->getMdfe() === $this) {
+                $mdfeIdeInfCiot->setMdfe(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MdfeIdeDisp[]
+     */
+    public function getMdfeIdeDisps(): Collection
+    {
+        return $this->mdfeIdeDisps;
+    }
+
+    public function addMdfeIdeDisp(MdfeIdeDisp $mdfeIdeDisp): self
+    {
+        if (!$this->mdfeIdeDisps->contains($mdfeIdeDisp)) {
+            $this->mdfeIdeDisps[] = $mdfeIdeDisp;
+            $mdfeIdeDisp->setMdfe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMdfeIdeDisp(MdfeIdeDisp $mdfeIdeDisp): self
+    {
+        if ($this->mdfeIdeDisps->contains($mdfeIdeDisp)) {
+            $this->mdfeIdeDisps->removeElement($mdfeIdeDisp);
+            // set the owning side to null (unless already changed)
+            if ($mdfeIdeDisp->getMdfe() === $this) {
+                $mdfeIdeDisp->setMdfe(null);
+            }
         }
 
         return $this;
