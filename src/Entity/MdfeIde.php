@@ -163,6 +163,16 @@ class MdfeIde
      */
     private $mdfeIdeDisps;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MdfeIdeVeicReboque", mappedBy="mdfe")
+     */
+    private $mdfeIdeVeicReboques;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MdfeIdeVeicTracao", mappedBy="mdfe")
+     */
+    private $mdfeIdeVeicTracaos;
+
     public function __construct()
     {
         $this->loadingCities = new ArrayCollection();
@@ -170,6 +180,8 @@ class MdfeIde
         $this->routingStates = new ArrayCollection();
         $this->mdfeIdeInfCiots = new ArrayCollection();
         $this->mdfeIdeDisps = new ArrayCollection();
+        $this->mdfeIdeVeicReboques = new ArrayCollection();
+        $this->mdfeIdeVeicTracaos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -603,6 +615,68 @@ class MdfeIde
             // set the owning side to null (unless already changed)
             if ($mdfeIdeDisp->getMdfe() === $this) {
                 $mdfeIdeDisp->setMdfe(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MdfeIdeVeicReboque[]
+     */
+    public function getMdfeIdeVeicReboques(): Collection
+    {
+        return $this->mdfeIdeVeicReboques;
+    }
+
+    public function addMdfeIdeVeicReboque(MdfeIdeVeicReboque $mdfeIdeVeicReboque): self
+    {
+        if (!$this->mdfeIdeVeicReboques->contains($mdfeIdeVeicReboque)) {
+            $this->mdfeIdeVeicReboques[] = $mdfeIdeVeicReboque;
+            $mdfeIdeVeicReboque->setMdfe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMdfeIdeVeicReboque(MdfeIdeVeicReboque $mdfeIdeVeicReboque): self
+    {
+        if ($this->mdfeIdeVeicReboques->contains($mdfeIdeVeicReboque)) {
+            $this->mdfeIdeVeicReboques->removeElement($mdfeIdeVeicReboque);
+            // set the owning side to null (unless already changed)
+            if ($mdfeIdeVeicReboque->getMdfe() === $this) {
+                $mdfeIdeVeicReboque->setMdfe(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MdfeIdeVeicTracao[]
+     */
+    public function getMdfeIdeVeicTracaos(): Collection
+    {
+        return $this->mdfeIdeVeicTracaos;
+    }
+
+    public function addMdfeIdeVeicTracao(MdfeIdeVeicTracao $mdfeIdeVeicTracao): self
+    {
+        if (!$this->mdfeIdeVeicTracaos->contains($mdfeIdeVeicTracao)) {
+            $this->mdfeIdeVeicTracaos[] = $mdfeIdeVeicTracao;
+            $mdfeIdeVeicTracao->setMdfe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMdfeIdeVeicTracao(MdfeIdeVeicTracao $mdfeIdeVeicTracao): self
+    {
+        if ($this->mdfeIdeVeicTracaos->contains($mdfeIdeVeicTracao)) {
+            $this->mdfeIdeVeicTracaos->removeElement($mdfeIdeVeicTracao);
+            // set the owning side to null (unless already changed)
+            if ($mdfeIdeVeicTracao->getMdfe() === $this) {
+                $mdfeIdeVeicTracao->setMdfe(null);
             }
         }
 
