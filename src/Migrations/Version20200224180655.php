@@ -23,11 +23,8 @@ final class Version20200224180655 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('CREATE TABLE mdfe_ide_loading_city (mdfe_ide_id INT NOT NULL, city_id INT NOT NULL, INDEX IDX_FE43A5C19C95957A (mdfe_ide_id), INDEX IDX_FE43A5C18BAC62AF (city_id), PRIMARY KEY(mdfe_ide_id, city_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE mdfe_ide_unloading_city (mdfe_ide_id INT NOT NULL, city_id INT NOT NULL, INDEX IDX_68D01659C95957A (mdfe_ide_id), INDEX IDX_68D01658BAC62AF (city_id), PRIMARY KEY(mdfe_ide_id, city_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE mdfe_ide_loading_city ADD CONSTRAINT FK_FE43A5C19C95957A FOREIGN KEY (mdfe_ide_id) REFERENCES mdfe_ide (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE mdfe_ide_loading_city ADD CONSTRAINT FK_FE43A5C18BAC62AF FOREIGN KEY (city_id) REFERENCES city (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE mdfe_ide_unloading_city ADD CONSTRAINT FK_68D01659C95957A FOREIGN KEY (mdfe_ide_id) REFERENCES mdfe_ide (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE mdfe_ide_unloading_city ADD CONSTRAINT FK_68D01658BAC62AF FOREIGN KEY (city_id) REFERENCES city (id) ON DELETE CASCADE');
     }
 
     public function down(Schema $schema) : void
@@ -36,6 +33,5 @@ final class Version20200224180655 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('DROP TABLE mdfe_ide_loading_city');
-        $this->addSql('DROP TABLE mdfe_ide_unloading_city');
     }
 }

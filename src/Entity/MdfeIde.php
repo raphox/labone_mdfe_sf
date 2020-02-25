@@ -20,7 +20,7 @@ class MdfeIde
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\City", cascade={"all"})
-     * @ORM\JoinTable(name="mdfe_ide_unloading_city")
+     * @ORM\OneToMany(targetEntity="MdfeIdeUnloadingCity", mappedBy="mdfe", cascade={"persist", "remove"}, orphanRemoval=TRUE)
      */
     private $unloadingCities;
 

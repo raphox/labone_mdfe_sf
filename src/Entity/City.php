@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -9,6 +11,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class City
 {
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\City", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="MdfeIdeUnloadingCity", mappedBy="city", cascade={"persist", "remove"}, orphanRemoval=TRUE)
+     */
+    private $unloadingCities;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -30,6 +38,11 @@ class City
      * @ORM\Column(type="integer", nullable=true)
      */
     private $ibge;
+
+    public function __construct()
+    {
+        $this->unloadingCities = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -75,5 +88,36 @@ class City
     public function __toString()
     {
         return $this->getName() . ' / ' . $this->state->getUf();
+    }
+
+    /**
+     * @return Collection|MdfeIdeUnloadingCity[]
+     */
+    public function getUnloadingCities(): Collection
+    {
+        return $this->unloadingCities;
+    }
+
+    public function addUnloadingCity(MdfeIdeUnloadingCity $unloadingCity): self
+    {
+        if (!$this->unloadingCities->contains($unloadingCity)) {
+            $this->unloadingCities[] = $unloadingCity;
+            $unloadingCity->setCity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUnloadingCity(MdfeIdeUnloadingCity $unloadingCity): self
+    {
+        if ($this->unloadingCities->contains($unloadingCity)) {
+            $this->unloadingCities->removeElement($unloadingCity);
+            // set the owning side to null (unless already changed)
+            if ($unloadingCity->getCity() === $this) {
+                $unloadingCity->setCity(null);
+            }
+        }
+
+        return $this;
     }
 }
