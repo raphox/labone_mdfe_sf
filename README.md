@@ -4,9 +4,9 @@ Utilizando o https://symfony.com/doc/master/bundles/EasyAdminBundle e a lib http
 
 ## Telas
 
-![Preview 01](doc/Screenshot from 2020-02-29 11-12-33.png?raw=true)
+![Preview 01](doc/Screenshot01.png?raw=true)
 
-![Preview 02](doc/Screenshot from 2020-02-29 11-13-02.png?raw=true)
+![Preview 02](doc/Screenshot02.png?raw=true)
 
 ## ATENÇÃO
 
