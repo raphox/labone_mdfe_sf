@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -85,6 +87,16 @@ class MdfeIdeVeicTracao
      * @ORM\ManyToOne(targetEntity="App\Entity\MdfeIde", inversedBy="mdfeIdeVeicTracaos")
      */
     private $mdfe;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MdfeIdeVeicTracaoCondutor", mappedBy="mdfe_ide_veic_tracao")
+     */
+    private $mdfeIdeVeicTracaoCondutors;
+
+    public function __construct()
+    {
+        $this->mdfeIdeVeicTracaoCondutors = new ArrayCollection();
+    }
 
     public function getCInt(): ?string
     {
@@ -250,6 +262,37 @@ class MdfeIdeVeicTracao
     public function setMdfe(?MdfeIde $mdfe): self
     {
         $this->mdfe = $mdfe;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MdfeIdeVeicTracaoCondutor[]
+     */
+    public function getMdfeIdeVeicTracaoCondutors(): Collection
+    {
+        return $this->mdfeIdeVeicTracaoCondutors;
+    }
+
+    public function addMdfeIdeVeicTracaoCondutor(MdfeIdeVeicTracaoCondutor $mdfeIdeVeicTracaoCondutor): self
+    {
+        if (!$this->mdfeIdeVeicTracaoCondutors->contains($mdfeIdeVeicTracaoCondutor)) {
+            $this->mdfeIdeVeicTracaoCondutors[] = $mdfeIdeVeicTracaoCondutor;
+            $mdfeIdeVeicTracaoCondutor->setMdfeIdeVeicTracao($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMdfeIdeVeicTracaoCondutor(MdfeIdeVeicTracaoCondutor $mdfeIdeVeicTracaoCondutor): self
+    {
+        if ($this->mdfeIdeVeicTracaoCondutors->contains($mdfeIdeVeicTracaoCondutor)) {
+            $this->mdfeIdeVeicTracaoCondutors->removeElement($mdfeIdeVeicTracaoCondutor);
+            // set the owning side to null (unless already changed)
+            if ($mdfeIdeVeicTracaoCondutor->getMdfeIdeVeicTracao() === $this) {
+                $mdfeIdeVeicTracaoCondutor->setMdfeIdeVeicTracao(null);
+            }
+        }
 
         return $this;
     }

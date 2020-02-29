@@ -2,6 +2,10 @@ easy_admin:
     site_name: 'MDFe - Labone Produtos para Hoteis e Moteis'
 
     design:
+        assets:
+            css:
+                - 'css/admin.css'
+
         menu:
             -
                 label: 'MDF-e'
@@ -153,11 +157,99 @@ easy_admin:
                             label: 'Indicador de MDF-e com inclusão da carga posterior',
                             help: 'Indicador de MDF-e com inclusão da carga posterior<br/> a emissão por evento de inclusão de DF-e'
                         }
-                    - { property: 'loadingCities', label: 'Municipios Carregamento', type: 'easyadmin_autocomplete' }
-                    - { property: 'unloadingCities', label: 'Municipios Descarregamento', type: 'easyadmin_autocomplete' }
-                    - { property: 'routingStates', label: 'Percurso', type: 'entity', type_options: { multiple: true, expanded: true } }
+                    - { type: 'section', label: 'Municípios de Carregamento', icon: 'truck' }
+                    - { property: 'loadingCities', label: 'Municípios', type: 'easyadmin_autocomplete', css_class: 'long' }
+                    - { type: 'section', label: 'Municípios de Descarregamento', icon: 'truck-loading' }
+                    -
+                        {
+                            property: 'unloadingCities',
+                            label: 'Municípios',
+                            type: 'collection',
+                            type_options: {
+                                entry_type: App\Form\MdfeIdeUnloadingCityType,
+                                entry_options: {
+                                    label: false
+                                },
+                                by_reference: false
+                            }
+                        }
+                    - { type: 'section', label: 'Percurso', icon: 'map-marker-alt' }
+                    - { property: 'routingStates', label: 'Estados', type: 'entity', type_options: { multiple: true, expanded: true } }
 
                     - { type: 'tab' , label: 'Rodoviário' }
+                    - { property: 'rntrc', label: 'RNTRC', help: 'Registro obrigatório do emitente do MDF-e junto à ANTT para exercer a atividade de transportador rodoviário de cargas por conta de terceiros e mediante remuneração.' }
+                    - { type: 'section', label: 'Veículos', icon: 'truck' }
+                    -
+                        {
+                            property: 'mdfeIdeVeicTracaos',
+                            label: 'Veículo',
+                            type: 'collection',
+                            type_options: {
+                                entry_type: App\Form\MdfeIdeVeicTracaoType,
+                                entry_options: {
+                                    label: false
+                                },
+                                by_reference: false
+                            }
+                        }
+                    - { type: 'section', label: 'Reboques', icon: 'truck-pickup' }
+                    -
+                        {
+                            property: 'mdfeIdeVeicReboques',
+                            label: 'Reboque',
+                            type: 'collection',
+                            type_options: {
+                                entry_type: App\Form\MdfeIdeVeicTracaoType,
+                                entry_options: {
+                                    label: false
+                                },
+                                by_reference: false
+                            }
+                        }
+                    - { type: 'section', label: 'Contratantes', icon: 'user-tie' }
+                    -
+                        {
+                            property: 'mdfeIdeInfContratantes',
+                            label: 'Contratante',
+                            type: 'collection',
+                            type_options: {
+                                entry_type: App\Form\MdfeIdeInfContratanteType,
+                                entry_options: {
+                                    label: false
+                                },
+                                by_reference: false
+                            }
+                        }
+                    - { type: 'section', label: 'Vales Pedágio', icon: 'user-tie' }
+                    -
+                        {
+                            property: 'mdfeIdeDisps',
+                            label: 'Vale Pedágio',
+                            type: 'collection',
+                            type_options: {
+                                entry_type: App\Form\MdfeIdeDispType,
+                                entry_options: {
+                                    label: false
+                                },
+                                by_reference: false
+                            }
+                        }
+                    - { type: 'section', label: 'CIOTs', icon: 'file-alt' }
+                    -
+                        {
+                            property: 'mdfeIdeInfCiots',
+                            label: 'CIOT',
+                            type: 'collection',
+                            type_options: {
+                                entry_type: App\Form\MdfeIdeInfCiotType,
+                                entry_options: {
+                                    label: false
+                                },
+                                by_reference: false
+                            }
+                        }
+
+
                     - { type: 'tab' , label: 'Informações dos Documentos' }
                     - { type: 'tab' , label: 'Informações Seguradora' }
                     - { type: 'tab' , label: 'Informações Adicionais' }

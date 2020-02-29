@@ -21,6 +21,11 @@ class MdfeIdeInfContratante
      */
     private $cnpj;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\MdfeIde", inversedBy="mdfeIdeInfContratantes")
+     */
+    private $mdfe;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -34,6 +39,18 @@ class MdfeIdeInfContratante
     public function setCnpj(?string $cnpj): self
     {
         $this->cnpj = $cnpj;
+
+        return $this;
+    }
+
+    public function getMdfe(): ?MdfeIde
+    {
+        return $this->mdfe;
+    }
+
+    public function setMdfe(?MdfeIde $mdfe): self
+    {
+        $this->mdfe = $mdfe;
 
         return $this;
     }

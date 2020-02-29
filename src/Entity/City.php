@@ -87,7 +87,7 @@ class City
 
     public function __toString()
     {
-        return $this->getName() . ' / ' . $this->state->getUf();
+        return $this->getName() . ' / ' . $this->getUf();
     }
 
     /**

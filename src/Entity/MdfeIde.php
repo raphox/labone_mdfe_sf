@@ -173,6 +173,11 @@ class MdfeIde
      */
     private $mdfeIdeVeicTracaos;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MdfeIdeInfContratante", mappedBy="mdfe")
+     */
+    private $mdfeIdeInfContratantes;
+
     public function __construct()
     {
         $this->loadingCities = new ArrayCollection();
@@ -182,6 +187,7 @@ class MdfeIde
         $this->mdfeIdeDisps = new ArrayCollection();
         $this->mdfeIdeVeicReboques = new ArrayCollection();
         $this->mdfeIdeVeicTracaos = new ArrayCollection();
+        $this->mdfeIdeInfContratantes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -677,6 +683,37 @@ class MdfeIde
             // set the owning side to null (unless already changed)
             if ($mdfeIdeVeicTracao->getMdfe() === $this) {
                 $mdfeIdeVeicTracao->setMdfe(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MdfeIdeInfContratante[]
+     */
+    public function getMdfeIdeInfContratantes(): Collection
+    {
+        return $this->mdfeIdeInfContratantes;
+    }
+
+    public function addMdfeIdeInfContratante(MdfeIdeInfContratante $mdfeIdeInfContratante): self
+    {
+        if (!$this->mdfeIdeInfContratantes->contains($mdfeIdeInfContratante)) {
+            $this->mdfeIdeInfContratantes[] = $mdfeIdeInfContratante;
+            $mdfeIdeInfContratante->setMdfe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMdfeIdeInfContratante(MdfeIdeInfContratante $mdfeIdeInfContratante): self
+    {
+        if ($this->mdfeIdeInfContratantes->contains($mdfeIdeInfContratante)) {
+            $this->mdfeIdeInfContratantes->removeElement($mdfeIdeInfContratante);
+            // set the owning side to null (unless already changed)
+            if ($mdfeIdeInfContratante->getMdfe() === $this) {
+                $mdfeIdeInfContratante->setMdfe(null);
             }
         }
 

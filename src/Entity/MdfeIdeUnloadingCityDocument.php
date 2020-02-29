@@ -36,11 +36,6 @@ class MdfeIdeUnloadingCityDocument
      */
     private $indReentrega;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $nItem;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -90,18 +85,6 @@ class MdfeIdeUnloadingCityDocument
     public function setIndReentrega(?bool $indReentrega): self
     {
         $this->indReentrega = $indReentrega;
-
-        return $this;
-    }
-
-    public function getNItem(): ?int
-    {
-        return $this->nItem;
-    }
-
-    public function setNItem(?int $nItem): self
-    {
-        $this->nItem = $nItem;
 
         return $this;
     }
