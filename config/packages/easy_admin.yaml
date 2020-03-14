@@ -268,10 +268,20 @@ easy_admin:
                         }
 
                     - { type: 'tab' , label: 'Informações Adicionais' }
-
-                    # - { property: 'tpAmb' }
-                    # - { property: 'procEmi', label: 'Identificação do processo de emissão do Manifesto' }
-                    # - { property: 'verProc', label: 'Informar a versão do aplicativo emissor de MDF-e.' }
+                    - { type: 'section', label: 'Totais', icon: 'calculator' }
+                    -
+                        {
+                            property: 'mdfeIdeTots',
+                            label: 'Total',
+                            type: 'collection',
+                            type_options: {
+                                entry_type: App\Form\MdfeIdeTotType,
+                                entry_options: {
+                                    label: false
+                                },
+                                by_reference: false
+                            }
+                        }
 
         Company:
             class: App\Entity\Company
