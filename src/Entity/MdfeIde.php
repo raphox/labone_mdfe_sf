@@ -178,6 +178,11 @@ class MdfeIde
      */
     private $mdfeIdeInfContratantes;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MdfeIdeSeg", mappedBy="mdfe")
+     */
+    private $mdfeIdeSegs;
+
     public function __construct()
     {
         $this->loadingCities = new ArrayCollection();
@@ -188,6 +193,7 @@ class MdfeIde
         $this->mdfeIdeVeicReboques = new ArrayCollection();
         $this->mdfeIdeVeicTracaos = new ArrayCollection();
         $this->mdfeIdeInfContratantes = new ArrayCollection();
+        $this->mdfeIdeSegs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -714,6 +720,37 @@ class MdfeIde
             // set the owning side to null (unless already changed)
             if ($mdfeIdeInfContratante->getMdfe() === $this) {
                 $mdfeIdeInfContratante->setMdfe(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MdfeIdeSeg[]
+     */
+    public function getMdfeIdeSegs(): Collection
+    {
+        return $this->mdfeIdeSegs;
+    }
+
+    public function addMdfeIdeSeg(MdfeIdeSeg $mdfeIdeSeg): self
+    {
+        if (!$this->mdfeIdeSegs->contains($mdfeIdeSeg)) {
+            $this->mdfeIdeSegs[] = $mdfeIdeSeg;
+            $mdfeIdeSeg->setMdfe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMdfeIdeSeg(MdfeIdeSeg $mdfeIdeSeg): self
+    {
+        if ($this->mdfeIdeSegs->contains($mdfeIdeSeg)) {
+            $this->mdfeIdeSegs->removeElement($mdfeIdeSeg);
+            // set the owning side to null (unless already changed)
+            if ($mdfeIdeSeg->getMdfe() === $this) {
+                $mdfeIdeSeg->setMdfe(null);
             }
         }
 

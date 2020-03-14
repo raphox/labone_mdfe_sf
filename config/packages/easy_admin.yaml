@@ -251,8 +251,24 @@ easy_admin:
 
 
                     - { type: 'tab' , label: 'Informações dos Documentos' }
+
                     - { type: 'tab' , label: 'Informações Seguradora' }
+                    -
+                        {
+                            property: 'mdfeIdeSegs',
+                            label: 'Seguradoras',
+                            type: 'collection',
+                            type_options: {
+                                entry_type: App\Form\MdfeIdeSegType,
+                                entry_options: {
+                                    label: false
+                                },
+                                by_reference: false
+                            }
+                        }
+
                     - { type: 'tab' , label: 'Informações Adicionais' }
+
                     # - { property: 'tpAmb' }
                     # - { property: 'procEmi', label: 'Identificação do processo de emissão do Manifesto' }
                     # - { property: 'verProc', label: 'Informar a versão do aplicativo emissor de MDF-e.' }
